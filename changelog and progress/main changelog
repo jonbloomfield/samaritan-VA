@@ -1,0 +1,14 @@
+wed 27-11-2019: 14.30:  fixed weather module now can ask diff locations
+sat 30-11-2019: 13:00:  began construction of wikipedia/dict module: possilbility of creating on api's once webscraping module implemented.
+sat 30-11-2019: 15:00:  wikipedia module being contructed.  lexical analasyis required.  construction began of general lexical analysis module. using nltk.  current planned functions:  tags and stopword removal
+sat 30-11-2019: lexical module shows promise.  protential to intergrate into main nlp system good for greater efficiency of db search progress by removing stop words.  edge cases possible threat to good nlp.  (eg "no thankyou" becomes 'thankyou').  advise to eventually create own stop stopword corpus. project added to list of projects.	
+fri 20-03-2020 14:20:	designing of memory system for general conversations commences. based off personality forge.
+fri 20-03-2020 14:40: seting up full wikicode functionality
+fri 20-03-2020 14:40: wiki functionality (summary/define) fully intergated into main system.
+fri 20-03-2020 16:04: begining re designing of front end with view to intregrate concurrency.
+sun 20-03-2020 17:52: continuing work on front gui
+sun 20-03-2020 22:30: gui mostly function with minor layout kiks. will change background then start on thread management.
+tue 24-03-2020 16:00: start core button starts main thread nw need to get it work work in background
+wed 25-02-2020 15:10: core thread no longer pauses need to work on sync
+sun 31-05-2020 17.44 kivy disgarded. tkinter in progess.
+mon 80-06-2020 19.15 tkinter basic gui ready to link up

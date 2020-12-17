@@ -1,11 +1,9 @@
-import tkinter as tk
-import tkinter.ttk as ttk
-root=tk.Tk()
-scrollbar = tk.Scrollbar()
-scrollbar.grid(column=1,row=0,sticky="ns")
-text = tk.Text(wrap="word", yscrollcommand=scrollbar.set)
-text.grid(row=0,column=0)
-text.insert(1.0,"test \n"*10)
-scrollbar.config(command=text.yview)
+from passlib.hash import sha256_crypt
 
-root.mainloop()
+password = sha256_crypt.hash("password")
+password2 = sha256_crypt.hash("password")
+
+print(password)
+print(password2)
+
+print(sha256_crypt.verify("password", password))

@@ -4,7 +4,10 @@ wordlist=[]
 idlist=[]
 
 def summary(word,flag):
-	definitionfull=wikipedia.summary(word)
+	try:
+		definitionfull=wikipedia.summary(word)
+	except:
+		return("unable to connect to wikipedia.  I suggest opening a book.")
 	if flag==0:
 		defsplit=definitionfull.split('. ')
 		newdef=defsplit[0:1]

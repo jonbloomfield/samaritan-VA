@@ -8,7 +8,7 @@ cacheweather=''
 idlist=[]
 wordlist=[]
 tags=[]
-loc=''
+loc='london'
 tomorrow=False
 
 
@@ -26,7 +26,7 @@ def currentweather(): #function for current weather
 	global cacheweather
 	global loc
 	if checkcache()==True:					#if new cache needed
-		obs = owm.weather_at_place('str(loc)+'',uk')                    
+		obs = owm.weather_at_place(str(loc)+',uk')                    
 		w = obs.get_weather()
 		cacheweather=w
 		return ('today, there will be '+w.get_detailed_status())
@@ -37,7 +37,7 @@ def getemperature():
 	global loc
 	global cacheweather
 	if checkcache()==True:
-		obs = owm.weather_at_place(loc+',uk')                    # if new cache needed
+		obs = owm.weather_at_place(str(loc)+',uk')                   # if new cache needed
 		w = obs.get_weather()
 		cacheweather=w
 		temp=w.get_temperature(unit='celsius')
@@ -45,7 +45,7 @@ def getemperature():
 		tempmin=tempmin[0:-2]
 		tempmax=str(format(temp['temp_max']))
 		tempmax=tempmax[0:-2]
-		return ('today, the temperature will be between '+tempmin+' degrees and '+tempmax+' degrees')
+		return ('today in '+loc+', the temperature will be between '+tempmin+' degrees and '+tempmax+' degrees')
 	elif checkcache()==False:
 		temp=cacheweather.get_temperature(unit='celsius')
 		tempmin=str(format(temp['temp_min']))
@@ -65,7 +65,10 @@ def feature_today(): #function to tell if particular weather feature will be pre
 		if i in featuredict.keys():
 			feature=i
 	feature=featuredict[feature]
-	fc = owm.three_hours_forecast(loc+',uk')
+	try:
+		fc = owm.three_hours_forecast(str(loc)+',uk')
+	except:
+		return("error connecting to weather network. I suggest you look outside")
 	f = fc.get_forecast()
 	lst = f.get_weathers()
 	lst=lst[0:4] 	#*NOTE : update list for tomorrow, currently only getting 1st 24 hrs

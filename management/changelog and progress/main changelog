@@ -1,0 +1,24 @@
+wed 27-11-2019: 14.30:  fixed weather module now can ask diff locations
+sat 30-11-2019: 13:00:  began construction of wikipedia/dict module: possilbility of creating on api's once webscraping module implemented.
+sat 30-11-2019: 15:00:  wikipedia module being contructed.  lexical analasyis required.  construction began of general lexical analysis module. using nltk.  current planned functions:  tags and stopword removal
+sat 30-11-2019: lexical module shows promise.  protential to intergrate into main nlp system good for greater efficiency of db search progress by removing stop words.  edge cases possible threat to good nlp.  (eg "no thankyou" becomes 'thankyou').  advise to eventually create own stop stopword corpus. project added to list of projects.	
+fri 20-03-2020 14:20:	designing of memory system for general conversations commences. based off personality forge.
+fri 20-03-2020 14:40: seting up full wikicode functionality
+fri 20-03-2020 14:40: wiki functionality (summary/define) fully intergated into main system.
+fri 20-03-2020 16:04: begining re designing of front end with view to intregrate concurrency.
+sun 20-03-2020 17:52: continuing work on front gui
+sun 20-03-2020 22:30: gui mostly function with minor layout kiks. will change background then start on thread management.
+tue 24-03-2020 16:00: start core button starts main thread nw need to get it work work in background
+wed 25-02-2020 15:10: core thread no longer pauses need to work on sync
+sun 31-05-2020 17.44 kivy disgarded. tkinter in progess.
+mon 08-06-2020 19.15 tkinter basic gui ready to link up
+wed 30/09/2020 17.37 issues with threading solved, gui hooked up, bugs and documentation next before 0.6 ready
+wed 30/09/2020 19.23 doc done, bugs fixed, 0.6 released
+thu 01/10/2020 17.15 spotify intergration begun using spotipy. to do short term: music, recordings, calendar/reminders, news
+sun 25/10/2020 11.13 project imported to py3
+mon 26/10/2020 17.34 newsapi intergation begun.  data formating required.
+wed 11/11/2020 16.34 news api formatting continued desgin if new module begun
+fri 13/11/2020 18.11 news api one option requires log file.  need security for said file for vars between sessions.  security system design begun.
+sat 14/11/2020 17.22 news api intergrated but only 1 cmd so far (with cat. customisation) note: differentiate between reading out ouput and text output
+sun 15/11/2020 16.46 sec module inprogess passwords and profiles ready+ encryption for log files.
+mon 16/11/2020 17.10 sec module progress continues. file system for profile and passwords in progess.

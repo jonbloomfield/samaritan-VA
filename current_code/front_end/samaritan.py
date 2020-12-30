@@ -16,7 +16,7 @@ class samaritanapp():
 	corewindow = tk.Toplevel(width=500,height=400)	#make core window
 	corewindow.geometry('1300x700')
 	corewindow.withdraw()	#make core window invisible til needed
-	corephoto = PhotoImage(file=r"startcore.png")
+	corephoto = PhotoImage(file="startcore.png")
 	corephoto = corephoto.subsample(2,2)	#image to big, half size
 	corestartedphoto=PhotoImage(file=r"corestarted.png")
 	corestartedphoto = corestartedphoto.subsample(2,2)

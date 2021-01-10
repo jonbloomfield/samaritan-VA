@@ -1,0 +1,3 @@
+master:$5$rounds=535000$dJMrUQM9r2bsxEmX$qlH/zMQJ.P1LcnlVeHz2dP8pjsdCh2aP5FMeU7bJeX0
+admin1:$5$rounds=535000$EHmPAufbFAOggiiG$djOLf6UmH/4pu.uRgo9JyQ9rK4t.jyeO66nbAmnOdcA
+admin2:$5$rounds=535000$dSjgMb4ndeyfn20.$JS3KPII4umRdd2XK4wXdWlrpJ0EFpHVXZWl/buEaaiD

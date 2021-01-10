@@ -17,26 +17,26 @@ To use Samaritan (one all perquisites are installed), run “samaritan.py” fro
 The screen should come up with a GUI with a large “START CORE” button.  This will set to core to start running.  Once pressed, another GUI window will open with an input and output textbox.  You can input your query, and the output will appear in the output box (and it will speak it out!)
 In future builds, a mic button for voice input or even an Alexa/google style “on word” may be implemented.
 Commands:
-	- WEATHER:
-		o What is the weather today?
-		o Will there be (insert weather type) today?
-		o What is the temperature today?
-		o Etc
-	- TIME/DATE
-		o What is the time
-		o What is the date?
-	- GENERAL:
-		o Who am i?
-		o Who are you?
-		o Couple of other little bits
-	- WIKIPEDIA:
-		o Define X
-		o Give me a summary/summarise X
+-	WEATHER:
+o	What is the weather today?
+o	Will there be (insert weather type) today?
+o	What is the temperature today?
+o	Etc
+-	TIME/DATE
+o	What is the time
+o	What is the date?
+-	GENERAL:
+o	Who am i?
+o	Who are you?
+o	Couple of other little bits
+-	WIKIPEDIA:
+o	Define X
+o	Give me a summary/summarise X
 CURRENTLY IN DEV:
-- News module
-- Profiles/users
-- Security privileges
-- Saved preferences for users.
-- Big general chat update/engine overhaul
-- Reminders/alarms/notes etc
+-	News module
+-	Profiles/users
+-	Security privileges
+-	Saved preferences for users.
+-	Big general chat update/engine overhaul
+-	Reminders/alarms/notes etc
 For full documentation, check the management folder of this project.

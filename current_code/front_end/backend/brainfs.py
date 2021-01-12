@@ -101,7 +101,7 @@ def gsetup(fc,idlist,tags):
 
 def tsetup(funct,idlist,tags):
     timef.idlist=idlist      #time setup
-    output=time.tselect(funct)
+    output=timef.tselect(funct)
     return output
 def wikisetup(funct,idlist,tags):
     global splittext1

@@ -1,5 +1,6 @@
 print('importing time module')
 from datetime import datetime
+import time
 global idlist
 
 def tell_time(name):

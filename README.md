@@ -21,25 +21,21 @@ In future builds, a mic button for voice input or even an Alexa/google style “
 Commands:
 -	WEATHER:
 
-o	What is the weather today?
-o	Will there be (insert weather type) today?
-o	What is the temperature today?
-o	Etc
+	-	What is the weather today?
+	-	Will there be (insert weather type) today?
+	-	What is the temperature today?
+	-	Etc
 -	TIME/DATE
-
-o	What is the time
-o	What is the date?
+	-	What is the time
+	-	What is the date?
 -	GENERAL:
-
-o	Who am i?
-o	Who are you?
-o	Couple of other little bits
+	-	Who am i? 
+	-	Who are you?
+	-	Couple of other little bits
 -	WIKIPEDIA:
-
-o	Define X
-o	Give me a summary/summarise X
+	-	Define X
+	-	Give me a summary/summarise X
 CURRENTLY IN DEV:
-
 -	News module
 -	Profiles/users
 -	Security privileges

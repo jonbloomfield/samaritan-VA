@@ -14,11 +14,11 @@ from nltk import PorterStemmer
 print('importing sqlite3')
 import sqlite3 as lite
 print('enternal modules imported: commencing greymatter module import.')
-from .greymatter import general_conversations,timef,weatherf,wikicode,newsfs
+from . greymatter import general_conversations,timef,weatherf,wikicode,newsfs
 print('grey matter successfully imported')
 
 import os.path
-splittext1=[]
+splitwordlist=[]
 
 def wordsearch(wordlist):
     newwordlist2=search(wordlist,"key_words")
@@ -87,9 +87,10 @@ def functionsearch(wordid):
     return(cur.fetchall())
 
 def wsetup(funct,idlist,tags):  #weather setup
-    global splittext1
+    global splitwordlist
+    print(splitwordlist)
     weatherf.idlist=idlist      #set weather file vars to brain vars
-    weatherf.wordlist=splittext1
+    weatherf.wordlist=splitwordlist
     weatherf.tags=tags
     output=weatherf.weatherfselect(funct,idlist)    #get output
     return output
@@ -104,8 +105,8 @@ def tsetup(funct,idlist,tags):
     output=timef.tselect(funct)
     return output
 def wikisetup(funct,idlist,tags):
-    global splittext1
-    wikicode.wordlist=splittext1    #wiki setup
+    global splitwordlist
+    wikicode.wordlist=splitwordlist    #wiki setup
     wikicode.idlist=idlist
     output=wikicode.setup(funct)
     return output
@@ -117,7 +118,10 @@ def newssetup(funct,idlist,tags):
 
 def brain(speech_text):
     global idlist
-    splittext,tags=lexicalmisc.removestopwords(speech_text) #remove stop words, splits
+    global splitwordlist
+    splittext,tags=lexicalmisc.removestopwords(speech_text)
+    splitwordlist,tags=lexicalmisc.removestopwords(speech_text)
+     #remove stop words, splits
     idlist,wordlist=wordsearch(splittext)   #send split text, get id + key words
     fcount=findfunction(idlist) #search for key word functs
     fc=functionsearch(fcount)   #go to funct via funct id

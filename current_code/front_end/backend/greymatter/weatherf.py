@@ -3,6 +3,7 @@ import pyowm
 import time
 import datetime
 owm = pyowm.OWM("b8650f4b75d74e34750b328562caf547")  # API key for open weather api
+mgr = owm.weather_manager()
 cacheweather=''
 
 idlist=[]
@@ -26,18 +27,18 @@ def currentweather(): #function for current weather
 	global cacheweather
 	global loc
 	if checkcache()==True:					#if new cache needed
-		obs = owm.weather_at_place(str(loc)+',uk')                    
-		w = obs.get_weather()
+		obs = mgr.weather_at_place(str(loc)+", UK")                    
+		w = obs.weather
 		cacheweather=w
-		return ('today, there will be '+w.get_detailed_status())
+		return ('today, there will be '+w.detailed_status)
 	elif checkcache()==False:
-		return ('today, there will be '+cacheweather.get_detailed_status())	#if cache recent, pull from cache
+		return ('today, there will be '+cacheweather.detailed_status)	#if cache recent, pull from cache
 
 def getemperature():
 	global loc
 	global cacheweather
 	if checkcache()==True:
-		obs = owm.weather_at_place(str(loc)+',uk')                   # if new cache needed
+		obs = mgr.weather_at_place(str(loc)+',uk')                   # if new cache needed
 		w = obs.get_weather()
 		cacheweather=w
 		temp=w.get_temperature(unit='celsius')
@@ -66,7 +67,7 @@ def feature_today(): #function to tell if particular weather feature will be pre
 			feature=i
 	feature=featuredict[feature]
 	try:
-		fc = owm.three_hours_forecast(str(loc)+',uk')
+		fc = mgr.three_hours_forecast(str(loc)+',uk')
 	except:
 		return("error connecting to weather network. I suggest you look outside")
 	f = fc.get_forecast()
@@ -99,14 +100,21 @@ def weatherfselect(funct,idlist):
 	global lastidlist
 	global tomorrow
 	global loc
+	global tags
 	lastidlist=idlist
 	if exists(102):
 		tomorrow=True
 	if exists(92):
 		tomorrow=False
+		print("here")
 
 	locpointer=''					#find location via speech format and change loc to current location
 	count=len(tags)-1
+	print(tags)
+	print(count)
+	print(wordlist)
+	print(funct)
+	print(idlist)
 	while(count>=0):
 		if tags[count]=='NN' and locpointer=='' and (wordlist[count]!='today'):
 			locpointer=count

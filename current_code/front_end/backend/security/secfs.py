@@ -169,10 +169,7 @@ def secmain(inp):
 	if inp=="":
 		output="INPUT NOT RECOGNISED.\n"+helpstring
 		return ""
-	try:
-		output=secmaindict[inp]()
-	except KeyError:
-		output="INPUT NOT RECOGNISED.\n"+helpstring
+	output=secmaindict[inp]()
 	return output
 
 

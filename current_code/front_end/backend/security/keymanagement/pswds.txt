@@ -1,4 +1,3 @@
 master:$5$rounds=535000$dJMrUQM9r2bsxEmX$qlH/zMQJ.P1LcnlVeHz2dP8pjsdCh2aP5FMeU7bJeX0
-admin1:$5$rounds=535000$EHmPAufbFAOggiiG$djOLf6UmH/4pu.uRgo9JyQ9rK4t.jyeO66nbAmnOdcA
-admin2:$5$rounds=535000$dSjgMb4ndeyfn20.$JS3KPII4umRdd2XK4wXdWlrpJ0EFpHVXZWl/buEaaiD
-test:$5$rounds=535000$.3zbCV/0SbeqIwXi$Wddl5FJZ2GA84BK6x4v3wDNchXrjg.TvzBe3h1ze9K9
+name:$5$rounds=535000$5zXCDmZiFpF7EXj5$UNg0iMA0TzsREsh4UCCuZymK3o/xyIJ24P6cA6ZYH2C
+test3:$5$rounds=535000$HBKf5x1ukWMulmGM$SI.VKU4Ty9A.mUMgya5iCIv4KgCO.l23oNNnli19yT9

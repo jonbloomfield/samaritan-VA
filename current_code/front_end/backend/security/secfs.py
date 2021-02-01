@@ -1,6 +1,6 @@
 import os
 from stat import S_IREAD, S_IWRITE
-
+from time import sleep
 from Crypto.Protocol.KDF import PBKDF2
 from passlib.hash import sha256_crypt
 from Crypto.Cipher import AES
@@ -17,7 +17,7 @@ helpstring+="PLEASE NOTE - WHILE SECURITY FUNCTIONS ARE UNDERWAY, NORMAL REQUEST
 currentprofilename=""
 currentprofileprivs=""
 currentprofileloc=""
-
+profiledata=[currentprofilename,currentprofileprivs,currentprofileloc]
 
 
 def passwordcheck(password,profilename):
@@ -35,7 +35,8 @@ def passwordcheck(password,profilename):
 
 def wait_for_secure_input():
 	while threadqueues.secureinput.empty():
-		i=1
+		sleep(0.1)
+	print("secinfound")
 	return threadqueues.secureinput.get()
 
 def newprofile():
@@ -44,19 +45,24 @@ def newprofile():
 	while pnameok==False:	
 		threadqueues.secureoutput.put("please enter profile name")
 		pname=wait_for_secure_input()
+		print(9)
 		fstring="/media/sf_share/samaritan-VA/current_code/front_end/backend/security/profiles/"+pname+".txt"
 		try:
 			f = open(fstring,"r")
 			f.close()
-			threadqueues.secureoutput.put("PROFILE NAME ALREADY IN USE. PLEASE TRY AGAIN.")
+			return("PROFILE NAME ALREADY IN USE. PLEASE TRY AGAIN.")
 		except FileNotFoundError:
 			pnameok=True
 	pscheckexit=0
+	print("here")
 	while(pscheckexit==0):
 		threadqueues.secureoutput.put("PROFILE NAME: "+pname+". Please enter profile password")
+		print(455)
 		pps=wait_for_secure_input()
+		print("here2")
 		threadqueues.secureoutput.put("please confirm password")
 		ppscheck=wait_for_secure_input()
+		print("j")
 		if(ppscheck==pps):
 			pscheckexit=1
 		else:
@@ -81,7 +87,7 @@ def newprofile():
 						rexit=0
 						exit=0
 					else:threadqueues.secureoutput.put("invalid input. please input Y/N.")
-
+	print(1234)
 	threadqueues.secureoutput.put("please enter default location (this can be changed later)")
 	loc=wait_for_secure_input()
 	storedpassword=sha256_crypt.hash(pps)
@@ -113,9 +119,9 @@ def newprofile():
 #16 for iv
 
 def retriveprofiledata():
-	threadqueues.secureoutput("please enter profile name")
+	threadqueues.secureoutput.put("please enter profile name")
 	pname=wait_for_secure_input()
-	threadqueues.secureoutput("please enter password")
+	threadqueues.secureoutput.put("please enter password")
 	password=wait_for_secure_input()
 	pnamefile="/media/sf_share/samaritan-VA/current_code/front_end/backend/security/profiles/"+pname+".txt"
 	try:
@@ -127,40 +133,50 @@ def retriveprofiledata():
 	if passcheck==False:
 		threadqueues.secureoutput.put("error.  name or password incorrect. please try again.")
 		return
-	iv = profilefile.read(16)
+	
+	print("passtrue")
 	salt=profilefile.read(32)
+	iv = profilefile.read(16)
 	ciphertext=profilefile.read()
 	profilefile.close()
 	key = PBKDF2(password, salt, dkLen=32) 
 	cipher = AES.new(key, AES.MODE_CBC, iv=iv)  # Setup cipher
 	original_data = unpad(cipher.decrypt(ciphertext), AES.block_size) # Decrypt and then up-pad the result
-	profiledata=original_data.split(":")
+	print(original_data)
+	profiledata=original_data.decode("utf-8").split(":")
+	print(profiledata)
 	global currentprofilename
 	global currentprofileprivs
 	global currentprofileloc
-	currentprofilename=profiledata[0]
-	currentprofileprivs=profiledata[1]
-	currentprofileloc=profiledata[2]			
+	currentprofilename=profiledata[1]
+	currentprofileprivs=profiledata[2]
+	currentprofileloc=profiledata[3]
+	return("login successful.  Welcome, "+currentprofilename+".")			
 
 def changepassword():
 	return "changepassword test"
 def helpoptions():
 	return helpstring
 
-
+def seccore():
+	while(True):
+		print("HERLHEOEHBEO")
+		inp=wait_for_secure_input()
+		output=secmain(inp)
+		threadqueues.secureoutput.put(output)
+		
 def secmain(inp):
 	if inp=="":
 		output="INPUT NOT RECOGNISED.\n"+helpstring
-		return output
+		return ""
 	output=secmaindict[inp]()
-	if output==None:
-		output="INPUT NOT RECOGNISED.\n"+helpstring
 	return output
 
 
 secmaindict={
 	"newprofile":newprofile,
 	"changepassword":changepassword,
+	"login":retriveprofiledata,
 	"help":helpoptions
 
 }

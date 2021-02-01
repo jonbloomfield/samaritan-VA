@@ -24,10 +24,7 @@ def main_loop():
 			man_flag=True
 			startflag=0
 		while(pauseflag==0):
-			while not threadqueues.secureinput.empty():
-				inp=threadqueues.secureinput.get()
-				output=secfs.secmain(inp)
-				threadqueues.secureoutput.put(output)
+			
 			while not threadqueues.inputqueue.empty():
 				inp=threadqueues.inputqueue.get()
 				print(inp)
@@ -38,7 +35,8 @@ def main_loop():
 				if inp=="MANUAL OFF":
 					man_flag=False
 				if inp=="DEBUG":
-					debug.debugaccess()
+					i=1
+					#debug.debugaccess()
 				else:
 					print(inp)
 					output=brainfs.brain(inp)

@@ -18,6 +18,8 @@ class samaritanapp():
 	corewindow.geometry('1300x700')
 	corewindow.withdraw()	#make core window invisible til needed
 
+
+
 	#imgs init
 	corephoto = PhotoImage(file="startcore.png")
 	corephoto = corephoto.subsample(2,2)	#image to big, half size
@@ -45,6 +47,10 @@ class samaritanapp():
 		threadqueues.secureinput.put(text)
 		event.widget.delete(0,END)	#blank entry box
 
+	def donothing(self):
+		x=1
+
+
 	minput = StringVar() 
 	maininput= tk.Entry(corewindow,textvariable=minput,font=("Courier", 10),width=80)
 	maininput.bind('<Return>',getmaintext)
@@ -62,15 +68,71 @@ class samaritanapp():
 	secinp = StringVar() 
 	secureinputbox= tk.Entry(corewindow,textvariable=secinp,font=("Courier", 10),width=80)
 	secureinputbox.bind('<Return>',getsecuretext)
+
 	def __init__(self):
 		logoimg = tk.Image("photo", file="logo.png")
 		self.top.tk.call('wm','iconphoto',self.top._w,logoimg)	#main win setup
 		self.top.title('SAMARITAN')
-		self.initstart()			#init app functs
+		self.initstart()
+		#init app functs
 		self.updatecorelabels()
-		#self.createloginwindow()
+
+		self.loginwindow=None
+
+		self.menubar = Menu(self.corewindow)
+		filemenu = Menu(self.menubar, tearoff=0)
+		filemenu.add_command(label="profile", command=self.createloginwindow)
+		filemenu.add_separator()
+		filemenu.add_command(label="Exit", command=self.corewindow.quit)
+		self.menubar.add_cascade(label="File", menu=filemenu)
+		helpmenu = Menu(self.menubar, tearoff=0)
+		helpmenu.add_command(label="Help Index", command=self.donothing)
+		helpmenu.add_command(label="About...", command=self.donothing)
+		self.menubar.add_cascade(label="Help", menu=helpmenu)
+		self.corewindow.config(menu=self.menubar)
+
 		self.top.mainloop()
-		
+
+	def createloginwindow(self):
+		try:
+			if(self.loginwindow.state()) == "normal":
+				self.loginwindow.lift()
+				return
+		except:print(0)
+
+		self.loginwindow=tk.Toplevel(width=200,height=200)
+		self.logintext=tk.Label(self.loginwindow,text="login with name/password to access customised features.")
+		self.loginname = StringVar() 
+		self.loginnameinput= tk.Entry(self.loginwindow,textvariable=self.loginname,font=("Courier", 10),width=80)
+		self.loginpassword=StringVar()
+		self.loginpasswordinput=tk.Entry(self.loginwindow,textvariable=self.loginpassword,show="*",font=("Courier", 10),width=80)
+		self.logintext.pack()
+		self.loginnameinput.pack()
+		self.loginpasswordinput.pack()
+		self.loginbutton=tk.Button(self.loginwindow,text="LOGIN",command=lambda:self.login())
+		self.loginbutton.pack()
+	def logout(self):
+		threadqueues.secureinput.put("logout")
+		self.loginnameinput.config(state="enabled")
+		self.loginpasswordinput.config(state="enabled")
+		self.logintext.config(text="login with name/password to access customised features.")
+		self.loginbutton.config(text="LOGIN",command=self.login)
+	def login(self):
+		pname=self.loginnameinput.get()
+		password=self.loginpasswordinput.get()
+		self.loginnameinput.delete(0,END)
+		self.loginpasswordinput.delete(0,END)
+		threadqueues.guilogin.put([pname,password])
+		threadqueues.secureinput.put("login")
+	def loginfail(self):
+		self.logintext.config(text="ERROR. PASSWORD OR NAME INCORRECT. PLEASE TRY AGAIN")
+	def loginsucess(self):
+		from backend.security.secfs import profiledata
+		self.loginnameinput.config(state="disabled")
+		self.loginpasswordinput.config(state="disabled")
+		print(profiledata[0])
+		self.logintext.config(text="Logged in as "+profiledata[0])
+		self.loginbutton.config(text="LOGOUT",command=self.logout)
 
 	def updatecorelabels(self):
 		if(self.corerunning==True):
@@ -93,19 +155,15 @@ class samaritanapp():
 				self.mainoutput.insert("end","\n")
 				self.mainoutput.insert("end",outputtext)		#funct to update output
 				self.mainoutput.config(state="disabled")
-		self.top.after(100,self.updatecorelabels) #make sure update funct runs again
-	
-	def createloginwindow(self):
-		loginwindow=tk.Toplevel(width=200,height=200)
-		logintext=tk.Label(loginwindow,text="login with name/password to access customised features.")
+			if not threadqueues.GUIflags.empty():
+				GUIflag=threadqueues.GUIflags.get()
+				self.GUIflagdict[GUIflag](self)
 
-		loginname = StringVar() 
-		loginnameinput= tk.Entry(loginwindow,textvariable=loginname,font=("Courier", 10),width=80)
-		loginpassword=StringVar()
-		loginpasswordinput=tk.Entry(loginwindow,textvariable=loginpassword,show="*",font=("Courier", 10),width=80)
-		logintext.pack()
-		loginnameinput.pack()
-		loginpasswordinput.pack()
+
+
+		self.top.after(100,self.updatecorelabels) #make sure update funct runs again
+
+
 
 	def initstart(self):
 		self.corebuttonstart.config(command=lambda:self.iscoreon())
@@ -156,7 +214,13 @@ class samaritanapp():
 			print("core resumed")	#unpause core
 			self.corebuttonstart.config(image=self.corestartedphoto)
 			self.corerunning=True
+	GUIflagdict={
+	"1,1":loginfail,
+	"1,2":loginsucess,
+	"2,1":alarm,
+	"2,2":eventremind
 
+	}
 		
 
 
@@ -171,4 +235,4 @@ corethread=threading.Thread(target=corethreadstart)
 corethread.start()
 secthread=threading.Thread(target=secthreadstart)
 secthread.start()
-samaritan=samaritanapp() # start frontend
+samaritan=samaritanapp() # start frontendself.corewindow.deiconify()

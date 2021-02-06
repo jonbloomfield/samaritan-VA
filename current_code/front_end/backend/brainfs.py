@@ -14,7 +14,7 @@ from nltk import PorterStemmer
 print('importing sqlite3')
 import sqlite3 as lite
 print('enternal modules imported: commencing greymatter module import.')
-from . greymatter import general_conversations,timef,weatherf,wikicode,newsfs
+from . greymatter import general_conversations,timef,weatherf,wikicode,newsfs,calendarcode
 print('grey matter successfully imported')
 
 import os.path
@@ -115,6 +115,13 @@ def newssetup(funct,idlist,tags):
     newsfs.idlist=idlist
     output=newsfs.nwsselect(funct)
     return output
+def calandersetup(funct,idlist,tags):
+    global splitwordlist
+    print(idlist,splitwordlist)
+    calendarcode.idlist=idlist
+    calendarcode.wordlist=splitwordlist
+    output=calendarcode.cselect()
+    return output
 
 def brain(speech_text):
     global idlist
@@ -122,10 +129,13 @@ def brain(speech_text):
     splittext,tags=lexicalmisc.removestopwords(speech_text)
     splitwordlist,tags=lexicalmisc.removestopwords(speech_text)
      #remove stop words, splits
-    idlist,wordlist=wordsearch(splittext)   #send split text, get id + key words
-    fcount=findfunction(idlist) #search for key word functs
+    idlist,wordlist=wordsearch(splittext)
+    print(idlist,wordlist)   #send split text, get id + key words
+    fcount=findfunction(idlist)
+    print(fcount) #search for key word functs
     fc=functionsearch(fcount)   #go to funct via funct id
     if fc==[]:
+        print(0)
         output=gsetup(fc,idlist,tags)   #if no id recognised, go to general convos (dont understand etc)
         return output
     fc=str((fc[0][0])) # formatting
@@ -148,5 +158,8 @@ maindict={
     'G':gsetup,
     'T':tsetup,
     'WIKI':wikisetup,
-    'N':newssetup
+    'N':newssetup,
+    'C':calandersetup
 }
+
+brain("set alarm for 11:00")

@@ -7,6 +7,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
 from Crypto.Util.Padding import unpad
 from Crypto.Random import get_random_bytes
+from datetime import datetime
 
 from .. import threadqueues
 
@@ -17,7 +18,9 @@ helpstring+="PLEASE NOTE - WHILE SECURITY FUNCTIONS ARE UNDERWAY, NORMAL REQUEST
 currentprofilename=""
 currentprofileprivs=""
 currentprofileloc=""
-profiledata=[currentprofilename,currentprofileprivs,currentprofileloc]
+currentprofilecalendar=[]
+profiledata=[currentprofilename,currentprofileprivs,currentprofileloc,currentprofilecalendar]
+
 
 
 def passwordcheck(password,profilename):
@@ -119,19 +122,31 @@ def newprofile():
 #16 for iv
 
 def retriveprofiledata():
-	threadqueues.secureoutput.put("please enter profile name")
-	pname=wait_for_secure_input()
-	threadqueues.secureoutput.put("please enter password")
-	password=wait_for_secure_input()
+	Gflag=False
+	if(threadqueues.guilogin.empty()==False):
+		guilogin=threadqueues.guilogin.get()
+		pname=guilogin[0]
+		password=guilogin[1]
+		Gflag=True
+		guilogin=[]
+	if(Gflag==False):
+		threadqueues.secureoutput.put("please enter profile name")
+		pname=wait_for_secure_input()
+		threadqueues.secureoutput.put("please enter password")
+		password=wait_for_secure_input()
 	pnamefile="/media/sf_share/samaritan-VA/current_code/front_end/backend/security/profiles/"+pname+".txt"
 	try:
 		profilefile=open(pnamefile,"rb")
 	except FileNotFoundError:
-		threadqueues.secureoutput.put("error.  name or password incorrect. please try again.")
+		if(Gflag==False):
+			threadqueues.secureoutput.put("error.  name or password incorrect. please try again.")
+		else:threadqueues.GUIflags.put("1,1")
 		return
 	passcheck=passwordcheck(password,pname)
 	if passcheck==False:
-		threadqueues.secureoutput.put("error.  name or password incorrect. please try again.")
+		if(Gflag==False):
+			threadqueues.secureoutput.put("error.  name or password incorrect. please try again.")
+		else:threadqueues.GUIflags.put("1,1")
 		return
 	
 	print("passtrue")
@@ -143,15 +158,15 @@ def retriveprofiledata():
 	cipher = AES.new(key, AES.MODE_CBC, iv=iv)  # Setup cipher
 	original_data = unpad(cipher.decrypt(ciphertext), AES.block_size) # Decrypt and then up-pad the result
 	print(original_data)
+	global profiledata
 	profiledata=original_data.decode("utf-8").split(":")
-	print(profiledata)
-	global currentprofilename
-	global currentprofileprivs
-	global currentprofileloc
-	currentprofilename=profiledata[1]
-	currentprofileprivs=profiledata[2]
-	currentprofileloc=profiledata[3]
-	return("login successful.  Welcome, "+currentprofilename+".")			
+	profiledata.pop(0)
+	print(profiledata[0])
+
+	if(Gflag==False):return("login successful.  Welcome, "+currentprofilename+".")		
+	else:
+		(threadqueues.GUIflags.put("1,2"))	
+		return False
 
 def changepassword():
 	return "changepassword test"
@@ -160,10 +175,12 @@ def helpoptions():
 
 def seccore():
 	while(True):
-		print("HERLHEOEHBEO")
 		inp=wait_for_secure_input()
 		output=secmain(inp)
-		threadqueues.secureoutput.put(output)
+		if(output!=False):
+			threadqueues.secureoutput.put(output)
+
+
 		
 def secmain(inp):
 	if inp=="":
